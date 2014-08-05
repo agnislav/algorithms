@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html data-ng-app="algorithms">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Algorithms homework</title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+<div class="wrapper" data-ng-controller="GcdCtrl">
+    <input data-ng-model="a" type="number"/>
+    <input data-ng-model="b" type="number"/>
+    <button data-ng-click="calculate()">Calculate</button>
+    <div data-ng-repeat="(title, entity) in result">
+        <h1 data-ng-bind="title"></h1>
+        <div data-ng-if="entity.result">Result: <span data-ng-bind="entity.result"></span></div>
+        <div data-ng-if="entity.error">Error: <span data-ng-bind="entity.error"></span></div>
+    </div>
+</div>
+</body>
+</html>
