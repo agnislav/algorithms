@@ -24,8 +24,9 @@ angular
             return angular.extend({}, response, {error: error});
         };
 
+        // TODO: move to a dedicated math service
         var sign = function (i) {
-            return i > 0 ? 1 : -1; //
+            return i > 0 ? 1 : i < 0 ? -1 : 0;
         };
 
         /*
@@ -33,15 +34,29 @@ angular
          */
 
         this.euclid = function (a, b) {
+            // Value checks
+            if (isNaN(a) || isNaN(b) || !a || !b) {
+                return error('Both a and b should be specified and should be numbers and shouldn\'t be equal 0');
+            }
+            if (sign(a) !== sign(b)) {
+                return error('Both a and b should have common sign');
+            }
 
+            // algorithm body
+            return result((function calculateEuclid(a, b) {
+                var m = a % b;
+                return m === 0 ? b : calculateEuclid(b, m);
+            }(a, b)));
         };
 
         this.iterative = function (a, b) {
             // Value checks
-            if (!a || !b) {
-                return error('Both a and b should be specified');
+            if (isNaN(a) || isNaN(b) || !a || !b) {
+                return error('Both a and b should be specified and should be numbers and shouldn\'t be equal 0');
             }
-            // TODO: finish checks
+            if (sign(a) !== sign(b)) {
+                return error('Both a and b should have common sign');
+            }
 
             // algorithm body
             var gcd = Math.min(a, b);
@@ -58,8 +73,8 @@ angular
 
         $scope.calculate = function () {
             $scope.result = {};
-            $scope.result['Iterative'] = (gcd.iterative($scope.a, $scope.b));
-            //$scope.result.push(gcd.euclid($scope.a, $scope.b));
+            $scope.result['Iterative'] = gcd.iterative($scope.a, $scope.b);
+            $scope.result['Euclid'] = gcd.euclid($scope.a, $scope.b);
         };
 
     }]);
